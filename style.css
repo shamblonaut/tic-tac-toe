@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --neutral-dark: #0f172a;
+  --neutral-medium: #64748b;
+  --neutral-light: #f1f5f9;
+  --neutral-dark-transparent: #0f172aa0;
+
+  --primary-medium: #f59e0b;
+  --secondary-medium: #6366f1;
+}
+
+body {
+  background-color: var(--neutral-dark);
+  color: var(--neutral-light);
+  font-family: sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.intro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.play, .start, .restart {
+  border: none;
+  background-color: var(--primary-medium);
+  color: var(--neutral-light);
+  font-size: 1.5rem;
+  padding: 2rem 3rem;
+  border-radius: 1rem;
+  margin: 10px 0;
+}
+
+.game {
+  flex: 1;
+  /* display: flex; */
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  grid-template-rows: repeat(3, 150px);
+}
+
+.square {
+  background-color: transparent;
+  border: 5px solid var(--neutral-medium);
+  color: var(--neutral-light);
+  font-size: 5rem;
+}
+
+.game-over {
+  /* display: flex; */
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.result {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.scores {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--secondary-medium);
+  padding: 25px;
+  border-radius: 10px;
+}
+
+.scores * {
+  text-align: center;
+}
+
+.scores p {
+  font-size: 3rem;
+}
+
+.score {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.popup-container {
+  background-color: var(--neutral-dark-transparent);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* display: flex; */
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: var(--secondary-medium);
+  padding: 25px 50px;
+  border-radius: 10px;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.players * {
+  margin: 10px 0;
+}
+
+.form-heading {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.player-name input {
+  margin-left: 10px;
+  padding: 5px;
+}
