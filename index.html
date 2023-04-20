@@ -13,7 +13,8 @@
   <div class="heading">Tic Tac Toe</div>
 
   <div class="intro">
-    <button class="play">Play Game</button>
+    <button class="play computer">Play against Computer</button>
+    <button class="play friend">Play with Friend</button>
   </div>
   <div class="game">
     <div class="board"></div>
@@ -30,14 +31,29 @@
 
   <div class="popup-container">
     <div class="popup">
-      <form action="" class="players">
+      <form action="" class="players computer">
+        <div class="form-heading">Enter player name</div>
+        <div class="player-name">
+          <label for="player">Player name:</label>
+          <input type="text" name="player" id="player" placeholder="Player">
+        </div>
+        <div class="player-piece">
+          <label for="piece">Piece:</label>
+          <select name="piece" id="piece">
+            <option value="X">X</option>
+            <option value="O">O</option>
+          </select>
+        </div>
+        <button class="start">Play</button>
+      </form>
+      <form action="" class="players friend">
         <div class="form-heading">Enter player names</div>
         <div class="player-name one">
-          <label for="player-one">Player 1:</label>
+          <label for="player-one">Player 1 (X):</label>
           <input type="text" name="player-one" id="player-one" placeholder="Player 1">
         </div>
         <div class="player-name two">
-          <label for="player-two">Player 2:</label>
+          <label for="player-two">Player 2 (O):</label>
           <input type="text" name="player-two" id="player-two" placeholder="Player 2">
         </div>
         <button class="start">Play</button>
