@@ -28,7 +28,7 @@ body {
 
 .heading {
   text-align: center;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .intro {
@@ -52,8 +52,14 @@ body {
 .game {
   flex: 1;
   display: none;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+.turn {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
 .board {

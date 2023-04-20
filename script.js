@@ -133,6 +133,7 @@ const game = (() => {
     getResult,
     getPlayers,
     getFirstPlayer,
+    getCurrentPlayer,
     getScores,
     setMode,
     setPlayers,
@@ -148,6 +149,7 @@ const displayController = (() => {
   const sections = [introSection, gameSection, gameOverSection];
 
   const gameBoardContainer = document.querySelector(".board");
+  const turnContainer = document.querySelector(".turn");
   const resultContainer = document.querySelector(".result");
   const scoreContainers = document.querySelectorAll(".score");
   const popupContainer = document.querySelector(".popup-container");
@@ -197,6 +199,10 @@ const displayController = (() => {
         square.style["color"] = "#f1f5f9";
       }
     });
+
+    // Update the player turn indicator
+    const player = game.getCurrentPlayer().name;
+    turnContainer.textContent = player === "You" ? "Your turn" : `${player}'s turn`;
 
     // Show result
     if (game.getGameOver()) {
