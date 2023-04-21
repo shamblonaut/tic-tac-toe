@@ -144,7 +144,8 @@ const game = (() => {
 
   const minimax = (state, depth, maximizingPlayer, player) => {
     // Static analysis
-    const winner = checkBoard(state, player).winner;
+    const playerToCheck = player === players[0] ? players[1] : players[0];
+    const winner = checkBoard(state, playerToCheck).winner;
     if (winner || depth == 0) {
       if (winner === players[0]) {
         return {
