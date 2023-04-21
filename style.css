@@ -12,7 +12,6 @@
   --neutral-light: #f1f5f9;
   --neutral-dark-transparent: #0f172aa0;
 
-  --primary-light: #ccfbf1;
   --primary-medium: #10b981;
   --secondary-medium-dark: #0e7490;
 }
@@ -148,12 +147,12 @@ body {
   font-size: 1.5rem;
 }
 
-.player-name input {
+.player-name input, select {
   margin-left: 10px;
   padding: 5px;
 }
 
-.player-name, .player-piece {
+.player-name, .player-piece, .game-difficulty {
   display: flex;
   justify-content: space-between;
 }

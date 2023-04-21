@@ -1,65 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic Tac Toe</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
 
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <div class="heading">Tic Tac Toe</div>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="heading">Tic Tac Toe</div>
 
-  <div class="intro">
-    <button class="play computer">Play against Computer</button>
-    <button class="play friend">Play with Friend</button>
-  </div>
-  <div class="game">
-    <div class="turn"></div>
-    <div class="board"></div>
-  </div>
-  <div class="game-over">
-    <div class="result"></div>
-    <div class="scores">
-      <p>Scores</p>
-      <div class="score"></div>
-      <div class="score"></div>
+    <div class="intro">
+      <button class="play computer">Play against Computer</button>
+      <button class="play friend">Play with Friend</button>
     </div>
-    <button class="restart">Play Again</button>
-  </div>
-
-  <div class="popup-container">
-    <div class="popup">
-      <form action="" class="players computer">
-        <div class="form-heading">Enter player name</div>
-        <div class="player-name">
-          <label for="player">Player name:</label>
-          <input type="text" name="player" id="player" placeholder="Player">
-        </div>
-        <div class="player-piece">
-          <label for="piece">Piece:</label>
-          <select name="piece" id="piece">
-            <option value="X">X</option>
-            <option value="O">O</option>
-          </select>
-        </div>
-        <button class="start">Play</button>
-      </form>
-      <form action="" class="players friend">
-        <div class="form-heading">Enter player names</div>
-        <div class="player-name one">
-          <label for="player-one">Player 1 (X):</label>
-          <input type="text" name="player-one" id="player-one" placeholder="Player 1">
-        </div>
-        <div class="player-name two">
-          <label for="player-two">Player 2 (O):</label>
-          <input type="text" name="player-two" id="player-two" placeholder="Player 2">
-        </div>
-        <button class="start">Play</button>
-      </form>
+    <div class="game">
+      <div class="turn"></div>
+      <div class="board"></div>
     </div>
-  </div>
-</body>
+    <div class="game-over">
+      <div class="result"></div>
+      <div class="scores">
+        <p>Scores</p>
+        <div class="score"></div>
+        <div class="score"></div>
+      </div>
+      <button class="restart">Play Again</button>
+    </div>
+
+    <div class="popup-container">
+      <div class="popup">
+        <form action="" class="players computer">
+          <div class="form-heading">Enter player name</div>
+          <div class="player-name">
+            <label for="player">Player name:</label>
+            <input type="text" name="player" id="player" placeholder="Player" />
+          </div>
+          <div class="player-piece">
+            <label for="piece">Piece:</label>
+            <select name="piece" id="piece">
+              <option value="X">X</option>
+              <option value="O">O</option>
+            </select>
+          </div>
+          <div class="game-difficulty">
+            <label for="difficulty">Difficulty</label>
+            <select name="difficulty" id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="normal">Normal</option>
+              <option value="hard">Hard</option>
+              <option value="impossible">Impossible</option>
+            </select>
+          </div>
+          <button class="start">Play</button>
+        </form>
+        <form action="" class="players friend">
+          <div class="form-heading">Enter player names</div>
+          <div class="player-name one">
+            <label for="player-one">Player 1 (X):</label>
+            <input
+              type="text"
+              name="player-one"
+              id="player-one"
+              placeholder="Player 1"
+            />
+          </div>
+          <div class="player-name two">
+            <label for="player-two">Player 2 (O):</label>
+            <input
+              type="text"
+              name="player-two"
+              id="player-two"
+              placeholder="Player 2"
+            />
+          </div>
+          <button class="start">Play</button>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>

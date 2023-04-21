@@ -4,6 +4,7 @@ const Player = (name, piece) => {
 
 const game = (() => {
   let mode = "";
+  let difficulty = "";
   let board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
   let players = [];
   let scores = [0, 0];
@@ -18,6 +19,7 @@ const game = (() => {
 
   const getBoard = () => board;
   const getMode = () => mode;
+  const getDifficulty = () => difficulty;
   const getGameOver = () => gameOver;
   const getResult = () => result;
   const getPlayers = () => players;
@@ -27,6 +29,10 @@ const game = (() => {
 
   const setMode = (gameMode) => {
     mode = gameMode;
+  };
+
+  const setDifficulty = (gameDifficulty) => {
+    difficulty = gameDifficulty;
   };
 
   const setPlayers = (playerNames, pieces) => {
@@ -43,64 +49,86 @@ const game = (() => {
     currentPlayer = firstPlayer;
   };
 
-  const checkBoard = () => {
+  const checkBoard = (gameBoard, player) => {
     let filled = true;
     let win = false;
     let strike = [];
-    const piece = currentPlayer.piece;
+    const piece = player.piece;
 
-    if (board[0] === piece && board[4] === piece && board[8] === piece) {
+    if (
+      gameBoard[0] === piece &&
+      gameBoard[4] === piece &&
+      gameBoard[8] === piece
+    ) {
       win = true;
       strike = [0, 4, 8];
-    } else if (board[2] === piece && board[4] === piece && board[6] === piece) {
+    } else if (
+      gameBoard[2] === piece &&
+      gameBoard[4] === piece &&
+      gameBoard[6] === piece
+    ) {
       win = true;
       strike = [2, 4, 6];
     }
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < board.length; i++) {
       if (
         i < 3 &&
-        board[i] === piece &&
-        board[i + 3] === piece &&
-        board[i + 6] === piece
+        gameBoard[i] === piece &&
+        gameBoard[i + 3] === piece &&
+        gameBoard[i + 6] === piece
       ) {
         win = true;
         strike = [i, i + 3, i + 6];
         break;
       } else if (
         i % 3 === 0 &&
-        board[i] === piece &&
-        board[i + 1] === piece &&
-        board[i + 2] === piece
+        gameBoard[i] === piece &&
+        gameBoard[i + 1] === piece &&
+        gameBoard[i + 2] === piece
       ) {
         win = true;
         strike = [i, i + 1, i + 2];
         break;
-      } else if (board[i] === " ") {
+      } else if (gameBoard[i] === " ") {
         filled = false;
       }
     }
 
     if (win) {
-      gameOver = true;
-      result.win = `${currentPlayer.name} won the game!`;
-
-      // Increment player score
-      if (currentPlayer === players[0]) scores[0]++;
-      else scores[1]++;
-
-      result.strike = strike;
-      firstPlayer = firstPlayer === players[0] ? players[1] : players[0];
+      return {
+        winner: player,
+        strike: strike,
+      };
     } else if (filled) {
-      gameOver = true;
-      result.win = "The game ended in a draw";
-      firstPlayer = firstPlayer === players[0] ? players[1] : players[0];
+      return {
+        winner: "draw",
+        strike: [],
+      };
     }
+
+    return 0;
   };
 
   const placePiece = (position) => {
     if (board[position] === " " && !gameOver) {
       board[position] = currentPlayer.piece;
-      checkBoard();
+      const consequence = checkBoard(board, currentPlayer);
+      if (consequence) {
+        gameOver = true;
+        if (consequence.winner === "draw") {
+          result.win = "The game ended in a draw";
+        } else {
+          result.win = `${consequence.winner.name} won the game!`;
+          result.strike = consequence.strike;
+
+          // Increment player score
+          if (consequence.winner === players[0]) scores[0]++;
+          else scores[1]++;
+        }
+        // Set first player for each round
+        firstPlayer = firstPlayer === players[0] ? players[1] : players[0];
+      }
+      // Swap the current player after each piece placement
       currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
       return true;
     } else if (gameOver) return true;
@@ -114,13 +142,130 @@ const game = (() => {
     return false;
   };
 
+  const minimax = (state, depth, maximizingPlayer, player) => {
+    // Static analysis
+    const winner = checkBoard(state, player).winner;
+    if (winner || depth == 0) {
+      if (winner === players[0]) {
+        return {
+          evaluation: 1,
+        };
+      } else if (winner === players[1]) {
+        return {
+          evaluation: -1,
+        };
+      } else {
+        return {
+          evaluation: 0,
+        };
+      }
+    }
+
+    /*
+     ** Here, the maximizing player is the player holding "X" and
+     ** the minimizing player is the player holding "O"
+     */
+
+    if (maximizingPlayer) {
+      // Moves for maximizing player
+      let maximumEvaluation = {
+        evaluation: -Infinity,
+        position: undefined,
+      };
+      let newState;
+
+      /*
+       ** Recursively scan every single possible placements until
+       ** all squares are filled
+       */
+      for (let position = 0; position < state.length; position++) {
+        if (state[position] === " ") {
+          newState = state.slice();
+          newState[position] = player.piece;
+          const evaluation = minimax(
+            newState,
+            depth - 1,
+            false,
+            players[1]
+          ).evaluation;
+
+          /*
+           ** Replace the previous maximum evaluation with larger
+           ** calculated evaluation
+           */
+          if (evaluation > maximumEvaluation.evaluation) {
+            maximumEvaluation.evaluation = evaluation;
+            maximumEvaluation.position = position;
+          }
+        }
+      }
+      return maximumEvaluation;
+    } else {
+      // Moves for minimizing player
+      let minimumEvaluation = {
+        evaluation: +Infinity,
+        position: undefined,
+      };
+      for (let position = 0; position < state.length; position++) {
+        if (state[position] === " ") {
+          let newState = state.slice();
+          newState[position] = player.piece;
+          const evaluation = minimax(
+            newState,
+            depth - 1,
+            true,
+            players[0]
+          ).evaluation;
+          if (evaluation < minimumEvaluation.evaluation) {
+            minimumEvaluation.evaluation = evaluation;
+            minimumEvaluation.position = position;
+          }
+        }
+      }
+      return minimumEvaluation;
+    }
+  };
+
   const placeComputerPiece = () => {
     if (currentPlayer.name === "Computer") {
-      let position = Math.floor(Math.random() * 10);
-      while (!placePiece(position)) {
-        position = Math.floor(Math.random() * 10);
+      let emptyBoard;
+      if (firstPlayer === currentPlayer) {
+        emptyBoard = true;
+        for (let i = 0; i < board.length; i++) {
+          if (board[i] !== " ") {
+            emptyBoard = false;
+          }
+        }
       }
-      return true;
+
+      if (difficulty === "easy" || emptyBoard) {
+        let position = Math.floor(Math.random() * 9);
+        while (!placePiece(position)) {
+          position = Math.floor(Math.random() * 9);
+        }
+      } else {
+        const isMaximizing = currentPlayer === players[0];
+        const position = minimax(
+          board,
+          8,
+          isMaximizing,
+          currentPlayer
+        ).position;
+
+        let losingChance = 0;
+        if (difficulty == "normal") losingChance = 35;
+        else if (difficulty == "hard") losingChance = 25;
+
+        if (Math.floor(Math.random() * 100) + 1 <= losingChance) {
+          let randomPosition = Math.floor(Math.random() * 9);
+          while (!placePiece(randomPosition)) {
+            randomPosition = Math.floor(Math.random() * 9);
+          }
+        } else {
+          placePiece(position);
+        }
+        return true;
+      }
     }
     return false;
   };
@@ -129,6 +274,7 @@ const game = (() => {
     resetBoard,
     getBoard,
     getMode,
+    getDifficulty,
     getGameOver,
     getResult,
     getPlayers,
@@ -136,6 +282,7 @@ const game = (() => {
     getCurrentPlayer,
     getScores,
     setMode,
+    setDifficulty,
     setPlayers,
     placePlayerPiece,
     placeComputerPiece,
@@ -163,7 +310,7 @@ const displayController = (() => {
   const twoPlayerForm = document.querySelector(".players.friend");
 
   // Creating the game board
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < game.getBoard().length; i++) {
     const square = document.createElement("button");
     square.classList.add("square");
     square.dataset["position"] = i;
@@ -202,7 +349,8 @@ const displayController = (() => {
 
     // Update the player turn indicator
     const player = game.getCurrentPlayer().name;
-    turnContainer.textContent = player === "You" ? "Your turn" : `${player}'s turn`;
+    turnContainer.textContent =
+      player === "You" ? "Your turn" : `${player}'s turn`;
 
     // Show result
     if (game.getGameOver()) {
@@ -227,9 +375,8 @@ const displayController = (() => {
       game.getFirstPlayer().name === "Computer"
     ) {
       setTimeout(() => {
-        if (game.placeComputerPiece()) {
-          updateBoard();
-        }
+        game.placeComputerPiece();
+        updateBoard();
       }, 500);
     }
     updateBoard();
@@ -243,11 +390,14 @@ const displayController = (() => {
       if (game.placePlayerPiece(square.dataset["position"])) {
         updateBoard();
       }
-      if (game.getMode() === "computer" && !game.getGameOver()) {
+      if (
+        game.getMode() === "computer" &&
+        !game.getGameOver() &&
+        game.getCurrentPlayer().name === "Computer"
+      ) {
         setTimeout(() => {
-          if (game.placeComputerPiece()) {
-            updateBoard();
-          }
+          game.placeComputerPiece();
+          updateBoard();
         }, 500);
       }
     });
@@ -273,20 +423,15 @@ const displayController = (() => {
         playerData = new FormData(singlePlayerForm);
 
         const playerPiece = playerData.get("piece");
-        let playerPieces = [];
-        const playerName = playerData.get("player") ? playerData.get("player") : "You";
+        const playerName = playerData.get("player")
+          ? playerData.get("player")
+          : "You";
         if (playerPiece === "X") {
-          playerNames = [
-            playerName,
-            "Computer",
-          ];
+          playerNames = [playerName, "Computer"];
         } else {
-          playerNames = [
-            "Computer",
-            playerName,
-          ];
+          playerNames = ["Computer", playerName];
         }
-
+        game.setDifficulty(playerData.get("difficulty"));
         game.setPlayers(playerNames);
         singlePlayerForm.style.display = "none";
       } else {
