@@ -142,7 +142,7 @@ const game = (() => {
     return false;
   };
 
-  const minimax = (state, depth, maximizingPlayer, player) => {
+  const minimax = (state, depth, alpha, beta, maximizingPlayer, player) => {
     // Static analysis
     const playerToCheck = player === players[0] ? players[1] : players[0];
     const winner = checkBoard(state, playerToCheck).winner;
@@ -186,6 +186,8 @@ const game = (() => {
           const evaluation = minimax(
             newState,
             depth - 1,
+            alpha,
+            beta,
             false,
             players[1]
           ).evaluation;
@@ -198,6 +200,10 @@ const game = (() => {
             maximumEvaluation.evaluation = evaluation;
             maximumEvaluation.position = position;
           }
+
+          // Alpha-Beta pruning
+          alpha = Math.max(alpha, evaluation);
+          if (beta <= alpha) break;
         }
       }
       return maximumEvaluation;
@@ -214,13 +220,24 @@ const game = (() => {
           const evaluation = minimax(
             newState,
             depth - 1,
+            alpha,
+            beta,
             true,
             players[0]
           ).evaluation;
+
+          /*
+           ** Replace the previous minimum evaluation with smaller
+           ** calculated evaluation
+           */
           if (evaluation < minimumEvaluation.evaluation) {
             minimumEvaluation.evaluation = evaluation;
             minimumEvaluation.position = position;
           }
+
+          // Alpha-Beta pruning
+          beta = Math.min(beta, evaluation);
+          if (beta <= alpha) break;
         }
       }
       return minimumEvaluation;
@@ -249,6 +266,8 @@ const game = (() => {
         const position = minimax(
           board,
           8,
+          -Infinity,
+          +Infinity,
           isMaximizing,
           currentPlayer
         ).position;
