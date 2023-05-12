@@ -149,11 +149,11 @@ const game = (() => {
     if (winner || depth == 0) {
       if (winner === players[0]) {
         return {
-          evaluation: 1,
+          evaluation: depth,
         };
       } else if (winner === players[1]) {
         return {
-          evaluation: -1,
+          evaluation: -depth,
         };
       } else {
         return {
@@ -324,6 +324,8 @@ const displayController = (() => {
   const computerPlayButton = document.querySelector(".play.computer");
   const friendPlayButton = document.querySelector(".play.friend");
   const startButtons = document.querySelectorAll(".start");
+  const backButtons = document.querySelectorAll(".back");
+  const resetButton = document.querySelector(".reset");
   const restartButton = document.querySelector(".restart");
 
   const singlePlayerForm = document.querySelector(".players.computer");
@@ -438,7 +440,7 @@ const displayController = (() => {
       event.preventDefault();
       let playerData;
       let playerNames;
-      if (startButton.parentElement.classList.contains("computer")) {
+      if (startButton.classList.contains("computer")) {
         game.setMode("computer");
         playerData = new FormData(singlePlayerForm);
 
@@ -472,6 +474,25 @@ const displayController = (() => {
 
       startGame();
     });
+  });
+
+  backButtons.forEach((backButton) => {
+    backButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      singlePlayerForm.style.display = "none";
+      twoPlayerForm.style.display = "none";
+      popupContainer.style.display = "none";
+      gameSection.style.display = "none";
+      gameOverSection.style.display = "none";
+      introSection.style.display = "flex";
+    });
+  });
+
+  resetButton.addEventListener("click", () => {
+    if (game.getCurrentPlayer().name !== "Computer") {
+      game.resetBoard();
+      updateBoard();
+    }
   });
 
   restartButton.addEventListener("click", startGame);

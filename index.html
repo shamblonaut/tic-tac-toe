@@ -19,6 +19,10 @@
     <div class="game">
       <div class="turn"></div>
       <div class="board"></div>
+      <div class="game-actions">
+        <button class="reset">Reset Game</button>
+        <button class="back">Quit Game</button>
+      </div>
     </div>
     <div class="game-over">
       <div class="result"></div>
@@ -27,7 +31,10 @@
         <div class="score"></div>
         <div class="score"></div>
       </div>
-      <button class="restart">Play Again</button>
+      <div class="gameover-actions">
+        <button class="back">Quit Game</button>
+        <button class="restart">Play Again</button>
+      </div>
     </div>
 
     <div class="popup-container">
@@ -54,7 +61,10 @@
               <option value="impossible">Impossible</option>
             </select>
           </div>
-          <button class="start">Play</button>
+          <div class="form-actions">
+            <button class="back">Cancel</button>
+            <button class="start computer">Play</button>
+          </div>
         </form>
         <form action="" class="players friend">
           <div class="form-heading">Enter player names</div>
@@ -76,7 +86,10 @@
               placeholder="Player 2"
             />
           </div>
-          <button class="start">Play</button>
+          <div class="form-actions">
+            <button class="back">Cancel</button>
+            <button class="start friend">Play</button>
+          </div>
         </form>
       </div>
     </div>

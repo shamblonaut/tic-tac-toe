@@ -25,6 +25,15 @@ body {
   flex-direction: column;
 }
 
+.play, .back, .start, .reset, .restart {
+  border: none;
+  background-color: var(--primary-medium);
+  color: var(--text-foreground);
+  font-size: 1.5rem;
+  border-radius: 1rem;
+  margin: 10px 0;
+}
+
 .heading {
   text-align: center;
   font-size: 2.5rem;
@@ -38,14 +47,8 @@ body {
   justify-content: center;
 }
 
-.play, .start, .restart {
-  border: none;
-  background-color: var(--primary-medium);
-  color: var(--text-foreground);
-  font-size: 1.5rem;
+.play {
   padding: 2rem 3rem;
-  border-radius: 1rem;
-  margin: 10px 0;
 }
 
 .game {
@@ -63,8 +66,8 @@ body {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, min(30vw, 150px));
-  grid-template-rows: repeat(3, min(30vw, 150px));
+  grid-template-columns: repeat(3, min(25vw, 125px));
+  grid-template-rows: repeat(3, min(25vw, 125px));
 }
 
 .square {
@@ -72,6 +75,13 @@ body {
   border: 5px solid var(--neutral-medium);
   color: var(--text-foreground);
   font-size: 5rem;
+}
+
+.game-actions, .gameover-actions {
+  margin-top: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 25px;
 }
 
 .game-over {
@@ -155,4 +165,14 @@ body {
 .player-name, .player-piece, .game-difficulty {
   display: flex;
   justify-content: space-between;
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+  gap: 10px;
+}
+
+.back, .start, .reset, .restart {
+  padding: 1rem;
 }
