@@ -35,10 +35,11 @@ const game = (() => {
     difficulty = gameDifficulty;
   };
 
-  const setPlayers = (playerNames, pieces) => {
+  const setPlayers = (playerNames) => {
     players = [Player(playerNames[0], "X"), Player(playerNames[1], "O")];
     currentPlayer = players[0];
     firstPlayer = players[0];
+    scores = [0, 0];
   };
 
   const resetBoard = () => {
@@ -127,9 +128,10 @@ const game = (() => {
         }
         // Set first player for each round
         firstPlayer = firstPlayer === players[0] ? players[1] : players[0];
+      } else {
+        // Swap the current player after each piece placement
+        currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
       }
-      // Swap the current player after each piece placement
-      currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
       return true;
     } else if (gameOver) return true;
     return false;
